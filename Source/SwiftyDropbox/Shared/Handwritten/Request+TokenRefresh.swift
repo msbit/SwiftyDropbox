@@ -104,7 +104,7 @@ class RequestWithTokenRefresh: ApiRequest {
     }
 
     private func handleTokenRefreshResult(_ result: DropboxOAuthResult?, requestCreation: RequestCreationBlock) {
-        if case let .error(oauthError, _) = result, !oauthError.isInvalidGrantError {
+        if case let .some(.error(oauthError, _)) = result, !oauthError.isInvalidGrantError {
             // Refresh failed, due to an error that's not invalid grant, e.g. A refresh request timed out.
             // Complete request with error immediately, so developers could retry and get access token refreshed.
             // Otherwise, the API request may proceed with an expired access token which would lead to
@@ -134,7 +134,7 @@ class RequestWithTokenRefresh: ApiRequest {
     private func setupCompletionHandler() {
         if let dataRequest = request as? Alamofire.DataRequest {
             let wrappedHandler: (DefaultDataResponse) -> Void = { dataResponse in
-                if case let .dataCompletionHandler(handler) = self.completionHandler {
+                if case let .some(.dataCompletionHandler(handler)) = self.completionHandler {
                     self.completionHandlerQueue.async {
                         handler(dataResponse)
                         self.cleanup()
@@ -146,7 +146,7 @@ class RequestWithTokenRefresh: ApiRequest {
             dataRequest.validate().response(completionHandler: wrappedHandler)
         } else if let downloadRequest = request as? Alamofire.DownloadRequest {
             let wrappedHandler: (DefaultDownloadResponse) -> Void = { downloadResponse in
-                if case let .downloadFileCompletionHandler(handler) = self.completionHandler {
+                if case let .some(.downloadFileCompletionHandler(handler)) = self.completionHandler {
                     self.completionHandlerQueue.async {
                         handler(downloadResponse)
                         self.cleanup()
@@ -173,10 +173,10 @@ class RequestWithTokenRefresh: ApiRequest {
     private func completeWithError(_ error: OAuth2Error) {
         completionHandlerQueue.async {
             switch self.completionHandler  {
-            case .dataCompletionHandler(let handler):
+            case let .some(.dataCompletionHandler(handler)):
                 let dataResponse = DefaultDataResponse(request: nil, response: nil, data: nil, error: error)
                 handler(dataResponse)
-            case .downloadFileCompletionHandler(let handler):
+            case let .some(.downloadFileCompletionHandler(handler)):
                 let downloadResponse = DefaultDownloadResponse(
                     request: nil, response: nil, temporaryURL: nil,
                     destinationURL: nil, resumeData: nil, error: error

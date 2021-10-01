@@ -80,7 +80,7 @@ public class ShortLivedAccessTokenProvider: AccessTokenProvider {
 
     private func handleRefreshResult(_ result: DropboxOAuthResult?) {
         queue.async(flags: .barrier) {
-            if case let .success(token) = result {
+            if case let .some(.success(token)) = result {
                 self.token = token
             }
             self.completionBlocks.forEach { block in
