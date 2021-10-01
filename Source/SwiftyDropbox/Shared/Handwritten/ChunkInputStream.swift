@@ -75,7 +75,7 @@ class ChunkInputStream: InputStream, StreamDelegate {
 
     override var delegate: StreamDelegate? {
         get {
-            streamDelegate
+            return streamDelegate
         }
         set {
             streamDelegate = newValue ?? self
@@ -83,11 +83,11 @@ class ChunkInputStream: InputStream, StreamDelegate {
     }
 
     override var streamStatus: Stream.Status {
-        internalStreamStatus
+        return internalStreamStatus
     }
 
     override var streamError: Error? {
-        internalStream?.streamError
+        return internalStream?.streamError
     }
 
     override func open() {
@@ -112,10 +112,10 @@ class ChunkInputStream: InputStream, StreamDelegate {
     }
 
     override func property(forKey key: Stream.PropertyKey) -> Any? {
-        internalStream?.property(forKey: key)
+        return internalStream?.property(forKey: key)
     }
 
     override func setProperty(_ property: Any?, forKey key: Stream.PropertyKey) -> Bool {
-        internalStream?.setProperty(property, forKey: key) ?? false
+        return internalStream?.setProperty(property, forKey: key) ?? false
     }
 }

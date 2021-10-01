@@ -478,7 +478,7 @@ open class DropboxAccessToken: CustomStringConvertible, Codable {
 
     /// Indicates whether the access token is short-lived.
     var isShortLivedToken: Bool {
-        refreshToken != nil && tokenExpirationTimestamp != nil
+        return refreshToken != nil && tokenExpirationTimestamp != nil
     }
 
     /// Designated Initializer

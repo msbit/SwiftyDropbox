@@ -25,7 +25,7 @@ public struct LongLivedAccessTokenProvider: AccessTokenProvider {
 /// Wrapper for short-lived token.
 public class ShortLivedAccessTokenProvider: AccessTokenProvider {
     public var accessToken: String {
-        queue.sync { token.accessToken }
+        return queue.sync { token.accessToken }
     }
 
     private let queue = DispatchQueue(
@@ -48,7 +48,7 @@ public class ShortLivedAccessTokenProvider: AccessTokenProvider {
     }
 
     private var refreshInProgress: Bool {
-        !completionBlocks.isEmpty
+        return !completionBlocks.isEmpty
     }
 
     /// - Parameters:

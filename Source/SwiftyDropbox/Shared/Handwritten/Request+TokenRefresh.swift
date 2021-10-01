@@ -52,7 +52,7 @@ class RequestWithTokenRefresh: ApiRequest {
         DispatchQueue(label: "com.dropbox.SwiftyDropbox.RequestWithTokenRefresh.serial.queue", qos: .userInitiated)
 
     private var completionHandlerQueue: DispatchQueue {
-        responseQueue ?? DispatchQueue.main
+        return responseQueue ?? DispatchQueue.main
     }
 
     /// Designated Initializer.

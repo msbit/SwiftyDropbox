@@ -30,13 +30,13 @@ enum OAuthUtils {
     /// Extracts auth response parameters from URL and removes percent encoding.
     /// Response parameters from DAuth via the Dropbox app are in the query component.
     static func extractDAuthResponseFromUrl(_ url: URL) -> [String: String] {
-        extractQueryParamsFromUrlString(url.absoluteString)
+        return extractQueryParamsFromUrlString(url.absoluteString)
     }
 
     /// Extracts auth response parameters from URL and removes percent encoding.
     /// Response parameters OAuth 2 code flow (RFC6749 4.1.2) are in the query component.
     static func extractOAuthResponseFromCodeFlowUrl(_ url: URL) -> [String: String] {
-        extractQueryParamsFromUrlString(url.absoluteString)
+        return extractQueryParamsFromUrlString(url.absoluteString)
     }
 
     /// Extracts auth response parameters from URL and removes percent encoding.
