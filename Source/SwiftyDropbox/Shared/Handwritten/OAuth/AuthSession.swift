@@ -62,7 +62,7 @@ struct OAuthPKCESession {
     init(scopeRequest: ScopeRequest?) {
         self.pkceData = PkceData()
         self.scopeRequest = scopeRequest
-        self.state = Self.createState(with: pkceData, scopeRequest: scopeRequest, tokenAccessType: tokenAccessType)
+        self.state = OAuthPKCESession.createState(with: pkceData, scopeRequest: scopeRequest, tokenAccessType: tokenAccessType)
     }
 
     private static func createState(
@@ -84,14 +84,14 @@ struct OAuthPKCESession {
 /// PKCE data for OAuth 2 Authorization Code Flow.
 struct PkceData {
     // A random string generated for each code flow.
-    let codeVerifier = Self.randomStringOfLength(128)
+    let codeVerifier = PkceData.randomStringOfLength(128)
     // A string derived from codeVerifier by using BASE64URL-ENCODE(SHA256(ASCII(code_verifier))).
     let codeChallenge: String
     // The hash method used to generate codeChallenge.
     let codeChallengeMethod = "S256"
 
     init() {
-        self.codeChallenge = Self.codeChallengeFromCodeVerifier(codeVerifier)
+        self.codeChallenge = PkceData.codeChallengeFromCodeVerifier(codeVerifier)
     }
 
     private static func randomStringOfLength(_ length: Int) -> String {

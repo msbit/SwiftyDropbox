@@ -550,7 +550,7 @@ public enum OAuth2Error: String, Error {
 
     /// Initializes an error code from the string specced in RFC6749
     init(errorCode: String) {
-        self = Self.init(rawValue: errorCode) ?? .unknown
+        self = OAuth2Error.init(rawValue: errorCode) ?? .unknown
     }
 
     /// Indicates whether the error is invalid_grant error.

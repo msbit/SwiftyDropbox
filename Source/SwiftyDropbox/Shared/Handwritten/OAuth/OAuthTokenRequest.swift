@@ -105,7 +105,7 @@ class OAuthTokenRequest {
         ]
         let allParams = params.merging(commonParams) { (_, commonParam) in commonParam }
         let headers = ["User-Agent": ApiClientConstants.defaultUserAgent]
-        request = Self.sessionManager.request(
+        request = OAuthTokenRequest.sessionManager.request(
             "\(ApiClientConstants.apiHost)/oauth2/token",
             method: .post,
             parameters: allParams,
@@ -128,7 +128,7 @@ class OAuthTokenRequest {
                     oauthResult = .error(.unknown, "Invalid response.")
                 }
             case .failure:
-                oauthResult = Self.resultFromErrorData(response.data)
+                oauthResult = OAuthTokenRequest.resultFromErrorData(response.data)
             }
             self?.retainSelf = nil
             queue.async { completion(oauthResult) }
